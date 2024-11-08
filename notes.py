@@ -22,15 +22,15 @@ filepath = os.path.join(path, "notes.txt")
 arguments = sys.argv[1:]
 if not arguments:
     print("Invalid usage.")
-    print(f"You must specify a subcommand -> {cmds}")
+    print(f"You must specify a subcommand -> {cmds} + your desired title.")
     sys.exit(1)
 
 if arguments[0] not in cmds:
     print(f"Invalid command: {arguments[0]}")
 
 if arguments[0] == "read": #leitura das notas
-    for line in open(filepath):
-        title, tag, text = line.split("\t")
+    for line in open(filepath): #abre o arquivo para leitura iterando linha por linha
+        title, tag, text = line.split("\t") #divide a linha em 3 partes por \t e salva nas variáveis 
         if tag.lower() == arguments[1].lower():
             print(f"title: {title}")
             print(f"text: {text}")
@@ -38,12 +38,12 @@ if arguments[0] == "read": #leitura das notas
             print()
 
 if arguments[0] == "new": #criação das notas
-    title = arguments[1]   # TODO tratar exceptions
+    title = arguments[1]   #TODO tratar exceptions
     text = [
         f"{title}",
         input("tag: ").strip(),
         input("text:\n").strip(),
     ]
-    # \t tsv = tab separated values
-    with open(filepath, "a") as file_:
+    #\t tsv = tab separated values
+    with open(filepath, "a") as file_: #abre o arquivo para escrita
         file_.write("\t".join(text) + "\n")
