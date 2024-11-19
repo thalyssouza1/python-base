@@ -37,13 +37,21 @@ if arguments[0] == "read": #leitura das notas
             print("-" * 30)
             print()
 
-if arguments[0] == "new": #criação das notas
-    title = arguments[1]   #TODO tratar exceptions
-    text = [
-        f"{title}",
-        input("tag: ").strip(),
-        input("text:\n").strip(),
-    ]
+if arguments[0] == "new":  # criação das notas
+    try:
+        title = arguments[1]
+        text = [
+            f"{title}",
+            input("tag: ").strip(),
+            input("text:\n").strip(),
+        ]
+    except IndexError:
+        print("Error: Title is missing.")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Unexpected error: {str(e)}")
+        sys.exit(1)
+    
     #\t tsv = tab separated values
     with open(filepath, "a") as file_: #abre o arquivo para escrita
         file_.write("\t".join(text) + "\n")

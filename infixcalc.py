@@ -33,7 +33,7 @@ import os
 import sys #para receber os argumentos do usuario na linha de comando
 arguments = sys.argv[1:]
 
-# TODO: Exceptions
+#Validação
 if not arguments:
     operation = input("operação: ")
     n1 = input("n1: ")
@@ -64,7 +64,11 @@ for num in nums:
         num = int(num)
     validated_nums.append(num)
 
-n1, n2 = validated_nums
+try:
+    n1, n2 = validated_nums
+except ValueError as e:
+    print(f"{str(e)}")
+    sys.exit(1)
 
 # TODO: Usar dict de funções
 if operation == "sum":
@@ -76,12 +80,17 @@ elif operation == "mul":
 elif operation == "div":
     result = n1 / n2
 
+print(f"O resultado é {result}.")
+
 path = os.curdir
 filepath = os.path.join(path, "infixcalc.log")
 timestamp = datetime.now().isoformat()
 user = os.getenv("USER", "anonimo")
 
-with open(filepath, "a") as file_:
-    file_.write(f"{user}: {timestamp}: {operation}, {n1}, {n2} = {result}\n")
-
-print(f"O resultado é {result}.")
+try:
+    with open(filepath, "a") as file_:
+        file_.write(f"{user}: {timestamp}: {operation}, {n1}, {n2} = {result}\n")
+except PermissionError as e:
+    # TODO: Usar logging
+    print(str(e))
+    sys.exit(1)
